@@ -10,6 +10,18 @@ type Chat = { id: string; title: string; messages: Message[]; updatedAt: number 
 const DEFAULT_MODEL = "meta-llama/llama-3.3-70b-instruct:free";
 const prompts = ["Explain a difficult topic simply", "Help me debug some code", "Build me a learning roadmap", "Compare two ideas objectively"];
 
+async function readApiResponse(response: Response): Promise<any> {
+  const body = await response.text();
+  try {
+    return body ? JSON.parse(body) : {};
+  } catch {
+    const preview = body.replace(/\\s+/g, " ").slice(0, 180);
+    throw new Error(
+      `Server returned a non-JSON response (HTTP ${response.status}): ${preview || "empty response"}`
+    );
+  }
+}
+
 export default function Home() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeId, setActiveId] = useState("");
@@ -77,11 +89,11 @@ export default function Home() {
       if (image) {
         setAnalyzing(true);
         const response = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ dataUrl: image, prompt: text.trim() || "Describe and analyze this image in detail." }) });
-        const data = await response.json(); if (!response.ok) throw new Error(data.error || "Image analysis failed");
+        const data = await readApiResponse(response); if (!response.ok) throw new Error(data.error || "Image analysis failed");
         reply = data.analysis;
       } else {
         const response = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ model, messages: next.map(m => ({ role: m.role, content: m.content })) }) });
-        const data = await response.json(); if (!response.ok) throw new Error(data.error || "Chat request failed");
+        const data = await readApiResponse(response); if (!response.ok) throw new Error(data.error || "Chat request failed");
         reply = data.reply;
       }
       saveMessages([...next, { role: "assistant", content: reply }]);
