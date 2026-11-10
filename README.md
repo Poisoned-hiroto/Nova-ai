@@ -2,31 +2,46 @@
 
 A standalone multi-model AI workspace built with Next.js. This repository is independent of the previous NOVA AI project and uses its own provider credentials and deployment.
 
-## Included in this first build
-- Responsive dark interface with local chat history.
-- Model selector populated from OpenRouter's available free models.
-- Server-side OpenRouter chat endpoint.
-- Optional Gemini 2.5 Flash image analysis endpoint.
-- Markdown and code formatting.
-- API keys stay server-side and are not exposed to the browser.
+## Current features
+- Responsive dark interface.
+- OpenRouter free-model selector and single-model chat.
+- **Opt-in model comparison:** OFF by default; when enabled, exactly two selected models are queried in parallel.
+- **Opt-in web search:** OFF by default; uses OpenRouter's web search server tool when enabled.
+- Gemini Flash-Lite image analysis.
+- Supabase email/password accounts.
+- Cloud-synced chat history with per-user Row Level Security.
+- Markdown, code formatting, and image uploads.
+- API keys remain server-side.
 
-## Run locally
-1. Install Node.js 20 or later.
-2. Copy .env.example to .env.local.
-3. Add OPENROUTER_API_KEY. Add GEMINI_API_KEY to enable image analysis.
-4. Run npm install and npm run dev.
-5. Open http://localhost:3000.
+## Required services and environment variables
 
-## Fresh provider accounts
-- OpenRouter: https://openrouter.ai/keys
-- Google AI Studio: https://aistudio.google.com/apikey
+Create a new Supabase project and add these variables in Vercel → Project → Settings → Environment Variables:
 
-Use new accounts and new keys for this project. Do not paste API keys into source files or commit them to GitHub.
+- `OPENROUTER_API_KEY` — from https://openrouter.ai/keys
+- `GEMINI_API_KEY` — from https://aistudio.google.com/apikey
+- `NEXT_PUBLIC_SUPABASE_URL` — Supabase Project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase publishable/anon key
+- `NEXT_PUBLIC_APP_URL` — deployed SMARTY AI URL
 
-## Deploy to a new Vercel account
-Import this repository into the new Vercel account. Add OPENROUTER_API_KEY and optionally GEMINI_API_KEY under Project Settings → Environment Variables. Set NEXT_PUBLIC_APP_URL to the deployed URL and redeploy.
+Use only the Supabase publishable/anon key in the browser. Never put a Supabase service-role key in a `NEXT_PUBLIC_*` variable or in client code.
 
-Free model availability and provider quotas can change. Free models can be rate-limited or unavailable. This project does not promise unlimited free usage.
+## Supabase database setup
 
-## Storage limitation in this version
-Chat history is stored in browser local storage. It stays on that browser/device and does not sync between devices. Cloud accounts and synced history can be added as a separate phase.
+1. Open the Supabase project → SQL Editor.
+2. Open `supabase/schema.sql` from this repository.
+3. Run the full SQL script. It creates the chats table and enables Row Level Security so each account can only read/write its own conversations.
+4. In Supabase → Authentication → URL Configuration, add the Vercel production URL to the allowed redirect/site URLs.
+5. In Authentication → Providers, ensure Email is enabled. Configure email confirmation as desired.
+
+## Deploy / update
+
+Vercel should automatically deploy each commit to `main`. After adding or changing environment variables, redeploy the latest deployment. Install dependencies with `npm install`; run locally with `npm run dev`.
+
+For local development, copy `.env.example` to `.env.local` and fill in the values. Do not commit `.env.local` or real keys.
+
+## Usage and cost controls
+
+- Comparison is disabled by default. Turning it ON sends at most two model requests for a prompt; turning it OFF sends only one.
+- Web search is disabled by default. OpenRouter web search may incur separate search-provider charges in addition to model usage. It is mutually exclusive with comparison in the current UI to avoid doubling search calls.
+- Free model availability, rate limits, and provider quotas can change. Free models are not unlimited.
+- Cloud chat history is account-specific. Row Level Security is enabled in the supplied SQL schema.
