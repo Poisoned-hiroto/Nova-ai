@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
           Authorization: "Bearer " + key,
           "Content-Type": "application/json",
           "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
-          "X-Title": "SMARTY AI Model Comparison",
+          "X-Title": "NOVA AI Model Comparison",
         },
         signal: AbortSignal.timeout(48_000),
         body: JSON.stringify({
