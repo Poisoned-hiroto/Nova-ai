@@ -193,8 +193,13 @@ export default function Home() {
 
   async function deleteChat(id: string) {
     const remaining = chats.filter(c => c.id !== id);
-    setChats(remaining);
-    if (activeId === id) setActiveId(remaining[0]?.id ?? "");
+    if (!remaining.length) {
+      const fresh = { id: crypto.randomUUID(), title: "New conversation", messages: [], updatedAt: Date.now() };
+      setChats([fresh]); setActiveId(fresh.id);
+    } else {
+      setChats(remaining);
+      if (activeId === id) setActiveId(remaining[0].id);
+    }
     if (supabase) await supabase.from("chats").delete().eq("id", id);
   }
 
