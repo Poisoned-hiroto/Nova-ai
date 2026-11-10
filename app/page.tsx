@@ -93,8 +93,11 @@ export default function Home() {
       setConfigured(d.configured);
       if (d.models?.length) {
         setModels(d.models);
-        setModel((current: string) => d.models.some((m: any) => m.id === current) ? current : d.models[0].id);
-        setCompareModel((current: string) => current || d.models.find((m: any) => m.id !== model)?.id || "");
+        const primary = d.models.some((m: any) => m.id === model) ? model : d.models[0].id;
+        setModel(primary);
+        setCompareModel((current: string) => current && current !== primary && d.models.some((m: any) => m.id === current)
+          ? current
+          : d.models.find((m: any) => m.id !== primary)?.id || "");
       }
     }).catch(() => setConfigured(false));
   }, [session?.user.id]);
@@ -252,7 +255,7 @@ export default function Home() {
         <div ref={bottom}/>
       </section>
       <footer className="composer-area"><div className="composer">
-        <div className="composer-head"><div className="model-wrap"><button className="model-button" onClick={() => setMenu(!menu)}><span>✳</span>{models.find(m => m.id === model)?.name ?? model.split("/").pop()}<ChevronDown size={14}/></button>{menu && <div className="model-menu">{(models.length ? models : [{id:DEFAULT_MODEL,name:"Llama 3.3 70B (Free)"}]).map(m => <button key={m.id} onClick={() => {setModel(m.id);setMenu(false);}}>{m.name}{model === m.id && <Check size={14}/>}</button>)}</div>}</div><small>AI can make mistakes. Verify important information.</small></div>
+        <div className="composer-head"><div className="model-wrap"><button className="model-button" onClick={() => setMenu(!menu)}><span>✳</span>{models.find(m => m.id === model)?.name ?? model.split("/").pop()}<ChevronDown size={14}/></button>{menu && <div className="model-menu">{(models.length ? models : [{id:DEFAULT_MODEL,name:"Llama 3.3 70B (Free)"}]).map(m => <button key={m.id} onClick={() => {setModel(m.id);if(compareModel === m.id) setCompareModel(models.find(item => item.id !== m.id)?.id || "");setMenu(false);}}>{m.name}{model === m.id && <Check size={14}/>}</button>)}</div>}</div><small>AI can make mistakes. Verify important information.</small></div>
         <div className="feature-toggles">
           <button className={"feature-toggle " + (compareEnabled ? "enabled" : "")} onClick={() => {setCompareEnabled(v => !v);setWebSearch(false);}} aria-pressed={compareEnabled}><GitCompareArrows size={14}/> Compare <span>{compareEnabled ? "ON" : "OFF"}</span></button>
           <button className={"feature-toggle " + (webSearch ? "enabled" : "")} onClick={() => {setWebSearch(v => !v);setCompareEnabled(false);}} aria-pressed={webSearch}><Globe2 size={14}/> Web search <span>{webSearch ? "ON" : "OFF"}</span></button>
