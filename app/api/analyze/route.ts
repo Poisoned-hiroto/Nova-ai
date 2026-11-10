@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireUser } from "@/lib/server-auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -7,6 +8,8 @@ const MODEL = "gemini-3.5-flash-lite";
 const REQUEST_TIMEOUT_MS = 45_000;
 
 export async function POST(request: NextRequest) {
+  const user = await requireUser(request);
+  if (!user) return NextResponse.json({ error: "Sign in to use image analysis." }, { status: 401 });
   const key = process.env.GEMINI_API_KEY;
   if (!key) {
     return NextResponse.json(
