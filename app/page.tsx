@@ -206,12 +206,12 @@ export default function Home() {
     if (supabase) await supabase.from("chats").delete().eq("id", id);
   }
 
-  if (!authReady) return <main className="auth-screen"><div className="auth-card"><BrainCircuit size={32}/><h1>SMARTY AI</h1><p>Loading your secure workspace…</p></div></main>;
+  if (!authReady) return <main className="auth-screen"><div className="auth-card"><BrainCircuit size={32}/><h1>NOVA AI</h1><p>Loading your secure workspace…</p></div></main>;
 
   if (!supabase || !session) return <main className="auth-screen">
     <form className="auth-card" onSubmit={authSubmit}>
       <div className="auth-logo"><BrainCircuit size={26}/></div>
-      <div className="eyebrow">YOUR PERSONAL AI WORKSPACE</div>
+      
       <h1>{!supabase ? "Connect your workspace" : authMode === "signin" ? "Welcome back." : "Create your account."}</h1>
       <p>{!supabase ? "Add your Supabase project URL and publishable/anon key to Vercel to enable secure account login." : "Sign in to access your conversations across devices."}</p>
       {!supabase ? <div className="auth-setup">Required Vercel variables: <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></div> : <>
@@ -221,7 +221,7 @@ export default function Home() {
         {authNotice && <div className="auth-notice">{authNotice}</div>}
         <button className="auth-submit" disabled={authBusy}>{authBusy ? "Please wait…" : authMode === "signin" ? "Sign in" : "Create account"}</button>
         <button type="button" className="auth-switch" onClick={() => {setAuthMode(authMode === "signin" ? "signup" : "signin");setAuthError("");setAuthNotice("");}}>
-          {authMode === "signin" ? "New to SMARTY AI? Create an account" : "Already have an account? Sign in"}
+          {authMode === "signin" ? "New to NOVA AI? Create an account" : "Already have an account? Sign in"}
         </button>
       </>}
     </form>
@@ -229,28 +229,28 @@ export default function Home() {
 
   return <main className="shell">
     <aside className={"sidebar " + (mobile ? "open" : "")}>
-      <div className="brand"><div className="brand-icon"><BrainCircuit size={21}/></div><span>smarty<span className="brand-ai">.ai</span></span><button className="mobile-close" onClick={() => setMobile(false)}><X size={18}/></button></div>
-      <button className="new-chat" onClick={newChat}><Plus size={17}/> New chat <span>⌘ K</span></button>
-      <div className="section-label">YOUR WORKSPACE</div>
+      <div className="brand"><div className="brand-icon"><BrainCircuit size={21}/></div><span>NOVA AI</span><button className="mobile-close" onClick={() => setMobile(false)}><X size={18}/></button></div>
+      <button className="new-chat" onClick={newChat}><Plus size={17}/> New chat</button>
+      <div className="section-label">RECENT CHATS</div>
       <div className="history">{chats.map(c => <div className={"history-row " + (c.id === activeId ? "active" : "")} key={c.id}>
         <button className="history-title" onClick={() => {setActiveId(c.id);setMobile(false);}}><span className="history-dot"/>{c.title}</button>
         <button className="delete" aria-label="Delete chat" onClick={() => deleteChat(c.id)}><Trash2 size={14}/></button>
       </div>)}</div>
-      <div className="side-bottom"><div className="workspace-card"><Sparkles size={17}/><div><b>SMARTY workspace</b><small>Cloud-synced account</small></div></div>
+      <div className="side-bottom"><div className="workspace-card"><Sparkles size={17}/><div><b>NOVA AI</b><small>Cloud-synced account</small></div></div>
         <div className="account-row"><UserRound size={14}/><span>{session.user.email}</span><button onClick={() => supabase.auth.signOut()} title="Sign out"><LogOut size={14}/></button></div>
       </div>
     </aside>
     {mobile && <button className="scrim" onClick={() => setMobile(false)} aria-label="Close sidebar"/>}
     <section className="main">
-      <header className="topbar"><div className="top-left"><button className="menu-btn" onClick={() => setMobile(true)}><Menu size={19}/></button><span>Workspace <i>/</i> Chat</span></div><div className="top-right"><span className={"provider " + (configured ? "connected" : "")}><b/> {configured ? "Provider connected" : "Setup required"}</span></div></header>
+      <header className="topbar"><div className="top-left"><button className="menu-btn" onClick={() => setMobile(true)}><Menu size={19}/></button><span>NOVA AI</span></div><div className="top-right"><span className={"provider " + (configured ? "connected" : "")}><b/> {configured ? "Provider connected" : "Setup required"}</span></div></header>
       <section className="conversation">
-        {messages.length === 0 ? <div className="welcome"><div className="hero-icon"><BrainCircuit size={31}/><span/></div><div className="eyebrow">✦ &nbsp; YOUR AI WORKSPACE</div><h1>One workspace.<br/><em>Many minds.</em></h1><p>Think bigger, build faster, and get sharper answers.<br/>Choose a model and get to work.</p><div className="prompt-grid">{prompts.map((p,i) => <button key={p} onClick={() => send(p)}><span>{["✳","⌘","↗","◈"][i]}</span>{p}<ArrowUp size={14}/></button>)}</div><div className="tagline"><Sparkles size={13}/> Your ideas deserve more than one perspective.</div></div> : <div className="messages">{messages.map((m,i) => <article className={"message " + m.role} key={i}>
-          <div className="avatar">{m.role === "assistant" ? <BrainCircuit size={17}/> : "Y"}</div><div className="message-content"><div className="message-label">{m.role === "assistant" ? "SMARTY AI" : "YOU"}{m.role === "assistant" && <small>{m.comparison ? "COMPARISON" : model.split("/").pop()}</small>}</div>
+        {messages.length === 0 ? <div className="welcome"><div className="hero-icon"><BrainCircuit size={31}/><span/></div><h1>Think it through<br/><em>with NOVA</em></h1><p>A focused space to make decisions, understand ideas, and turn plans into action.</p><div className="prompt-grid">{prompts.map((p,i) => <button key={p} onClick={() => send(p)}><span>{["✳","⌘","↗","◈"][i]}</span>{p}<ArrowUp size={14}/></button>)}</div></div> : <div className="messages">{messages.map((m,i) => <article className={"message " + m.role} key={i}>
+          <div className="avatar">{m.role === "assistant" ? <BrainCircuit size={17}/> : "Y"}</div><div className="message-content"><div className="message-label">{m.role === "assistant" ? "NOVA AI" : "YOU"}{m.role === "assistant" && <small>{m.comparison ? "COMPARISON" : model.split("/").pop()}</small>}</div>
           {m.image && <img className="uploaded-image" src={m.image} alt="Uploaded image"/>}
           {m.comparison ? <div className="comparison-grid">{m.comparison.map((result,j) => <section className="comparison-card" key={result.requestedModel}><div className="comparison-heading"><b>{result.requestedModel.split("/").pop()}</b><span>{result.ok ? "Response" : "Unavailable"}</span></div>{result.ok ? <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]}>{result.reply ?? ""}</ReactMarkdown></div> : <p className="comparison-error">{result.error}</p>}</section>)}</div> : <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown></div>}
           {m.sources?.length ? <div className="source-list"><b>Sources</b>{m.sources.map(source => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.title}</a>)}</div> : null}
         </div></article>)}</div>}
-        {busy && <article className="message assistant"><div className="avatar"><BrainCircuit size={17}/></div><div className="message-content"><div className="message-label">SMARTY AI</div><div className="thinking"><span/><span/><span/>{analyzing ? "Analyzing image…" : compareEnabled ? "Comparing two models…" : webSearch ? "Searching the web and thinking…" : "Thinking…"}</div></div></article>}
+        {busy && <article className="message assistant"><div className="avatar"><BrainCircuit size={17}/></div><div className="message-content"><div className="message-label">NOVA AI</div><div className="thinking"><span/><span/><span/>{analyzing ? "Analyzing image…" : compareEnabled ? "Comparing two models…" : webSearch ? "Searching the web and thinking…" : "Thinking…"}</div></div></article>}
         {error && <div className="error"><span>{error}</span><button onClick={() => setError("")}><X size={15}/></button></div>}
         <div ref={bottom}/>
       </section>
@@ -263,9 +263,9 @@ export default function Home() {
         {compareEnabled && <div className="compare-select"><span>Compare against</span><select value={compareModel} onChange={e => setCompareModel(e.target.value)}><option value="">Choose second model</option>{models.filter(m => m.id !== model).map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select><small>Only 2 models run, and only when comparison is ON.</small></div>}
         {webSearch && <div className="search-note"><Search size={13}/> Web search can add provider search charges. It stays OFF unless you enable it.</div>}
         {file && <div className="file-chip"><FileImage size={15}/>{file.name}<button onClick={() => setFile(null)}><X size={14}/></button></div>}
-        <textarea value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => {if (e.key === "Enter" && !e.shiftKey) {e.preventDefault();send();}}} placeholder="Message SMARTY AI…" rows={2}/>
+        <textarea value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => {if (e.key === "Enter" && !e.shiftKey) {e.preventDefault();send();}}} placeholder="Message NOVA AI…" rows={2}/>
         <div className="composer-foot"><div className="attach-area"><button onClick={() => fileInput.current?.click()}><Paperclip size={16}/> Attach</button><input ref={fileInput} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={e => setFile(e.target.files?.[0] ?? null)}/><small>Images · PNG, JPG, WEBP</small></div><button className="send" disabled={busy || (!input.trim() && !file)} onClick={() => send()}>{busy ? "…" : <ArrowUp size={18}/>}</button></div>
-      </div><div className="mobile-disclaimer">SMARTY AI may produce inaccurate information.</div></footer>
+      </div><div className="mobile-disclaimer">NOVA AI may produce inaccurate information.</div></footer>
     </section>
   </main>;
 }
