@@ -206,7 +206,7 @@ export default function Home() {
       <div className="eyebrow">YOUR PERSONAL AI WORKSPACE</div>
       <h1>{!supabase ? "Connect your workspace" : authMode === "signin" ? "Welcome back." : "Create your account."}</h1>
       <p>{!supabase ? "Add your Supabase project URL and publishable/anon key to Vercel to enable secure account login." : "Sign in to access your conversations across devices."}</p>
-      {!supabase ? <div className="auth-setup">Required Vercel variables: <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code></div> : <>
+      {!supabase ? <div className="auth-setup">Required Vercel variables: <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></div> : <>
         <label>Email address<input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" required autoComplete="email"/></label>
         <label>Password<input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 8 characters" minLength={8} required autoComplete={authMode === "signin" ? "current-password" : "new-password"}/></label>
         {authError && <div className="auth-error">{authError}</div>}
