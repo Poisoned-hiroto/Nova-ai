@@ -1,4 +1,4 @@
--- Run this once in Supabase SQL Editor for SMARTY AI.
+-- Run this once in Supabase SQL Editor for NOVA AI.
 create table if not exists public.chats (
   id text primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
