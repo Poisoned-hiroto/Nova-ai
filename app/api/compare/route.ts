@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
           model,
           messages,
           temperature: 0.5,
-          ...(body.webSearch === true ? { tools: [{ type: "openrouter:web_search", max_results: 4 }] } : {}),
+          ...(body.webSearch === true ? { tools: [{ type: "openrouter:web_search", max_total_results: 4 }] } : {}),
         }),
       });
       const data = await response.json().catch(() => ({}));
