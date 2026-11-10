@@ -8,7 +8,7 @@ type ChatMessage = { role: "user" | "assistant" | "system"; content: string };
 
 export async function POST(request: NextRequest) {
   const user = await requireUser(request);
-  if (!user) return NextResponse.json({ error: "Sign in to use SMARTY AI." }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Sign in to use NOVA AI." }, { status: 401 });
 
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return NextResponse.json({ error: "OpenRouter is not configured." }, { status: 503 });
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
         Authorization: "Bearer " + key,
         "Content-Type": "application/json",
         "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
-        "X-Title": "SMARTY AI",
+        "X-Title": "NOVA AI",
       },
       signal: AbortSignal.timeout(48_000),
       body: JSON.stringify({
