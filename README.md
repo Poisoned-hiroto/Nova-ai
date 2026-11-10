@@ -20,7 +20,7 @@ Create a new Supabase project and add these variables in Vercel → Project → 
 - `OPENROUTER_API_KEY` — from https://openrouter.ai/keys
 - `GEMINI_API_KEY` — from https://aistudio.google.com/apikey
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase Project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase publishable/anon key
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Supabase publishable/anon key
 - `NEXT_PUBLIC_APP_URL` — deployed SMARTY AI URL
 
 Use only the Supabase publishable/anon key in the browser. Never put a Supabase service-role key in a `NEXT_PUBLIC_*` variable or in client code.
