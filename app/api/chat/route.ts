@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         model,
         messages,
         temperature: 0.7,
-        ...(webSearch ? { tools: [{ type: "openrouter:web_search", max_total_results: 5 }] } : {}),
+        ...(webSearch ? { tools: [{ type: "openrouter:web_search", parameters: { max_results: 5, max_total_results: 5, max_uses: 1, search_context_size: "low" } }] } : {}),
       }),
     });
 
