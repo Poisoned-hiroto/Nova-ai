@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SMARTY AI — One workspace. Many minds.",
-  description: "A multi-model AI workspace powered by OpenRouter.",
+  title: "NOVA AI — Think it through",
+  description: "A focused AI workspace for thinking, research, and problem solving.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
