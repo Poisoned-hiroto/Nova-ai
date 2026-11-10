@@ -1,6 +1,6 @@
-# SMARTY AI
+# NOVA AI
 
-A standalone multi-model AI workspace built with Next.js. This repository is independent of the previous NOVA AI project and uses its own provider credentials and deployment.
+A standalone multi-model AI workspace built with Next.js. This is the Next.js edition of NOVA AI, with its own provider credentials and deployment.
 
 ## Current features
 - Responsive dark interface.
@@ -21,7 +21,7 @@ Create a new Supabase project and add these variables in Vercel → Project → 
 - `GEMINI_API_KEY` — from https://aistudio.google.com/apikey
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase Project URL
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Supabase publishable/anon key
-- `NEXT_PUBLIC_APP_URL` — deployed SMARTY AI URL
+- `NEXT_PUBLIC_APP_URL` — deployed NOVA AI URL
 
 Use only the Supabase publishable/anon key in the browser. Never put a Supabase service-role key in a `NEXT_PUBLIC_*` variable or in client code.
 
